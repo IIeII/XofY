@@ -14,6 +14,9 @@ public class MainScreenViewLogic extends JFrame {
     private int defaultCellSize = 80;
     private int distanceBetweenButtons = 2;
 
+    private Color DEFAULT_COLOR = Color.BLACK;
+    private Color CUSTOM_COLOR = Color.RED;
+
     public HashMap<String, JButton> fieldButtons = new HashMap<>();
 
     public MainScreenViewLogic() {
@@ -69,15 +72,26 @@ public class MainScreenViewLogic extends JFrame {
 
     private JButton initButton(int row, int column) {
 
-
         JButton button = new JButton("");
         button.setVisible(true);
         button.setFont(new Font("Tahoma", Font.PLAIN, defaultCellSize/2));
+        button.setForeground(DEFAULT_COLOR);
         button.setBounds(10 + (distanceBetweenButtons + defaultCellSize) * row, 10 + (distanceBetweenButtons + defaultCellSize) * column, defaultCellSize, defaultCellSize);
         button.setName(row + "_" + column);
         button.setFocusable(false);
         getContentPane().add(button);
 
         return button;
+    }
+
+    public void reSetField() {
+        for (JButton button : fieldButtons.values()) {
+            button.setForeground(DEFAULT_COLOR);
+            button.setText("");
+        }
+    }
+
+    public void updateField(){
+
     }
 }

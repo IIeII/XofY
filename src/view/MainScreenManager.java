@@ -1,7 +1,6 @@
 package view;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -24,8 +23,6 @@ public class MainScreenManager implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent evt) {
-        JButton source = (JButton)evt.getSource();
-        source.setText("X");
-        source.setForeground(Color.RED);
+        JButton button = (JButton)evt.getSource();
     }
 }
