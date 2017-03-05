@@ -1,6 +1,7 @@
 package view;
 
 import config.GameConfig;
+import logic.vo.Cell;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +15,6 @@ public class MainScreenViewLogic extends JFrame {
     private int defaultCellSize = 80;
     private int distanceBetweenButtons = 2;
 
-    private Color DEFAULT_COLOR = Color.BLACK;
-    private Color CUSTOM_COLOR = Color.RED;
-
     public HashMap<String, JButton> fieldButtons = new HashMap<>();
 
     public MainScreenViewLogic() {
@@ -27,7 +25,7 @@ public class MainScreenViewLogic extends JFrame {
 
     private void init() {
 
-        setName("main");
+        setName("view");
 
         this.setBounds(100, 100, GameConfig.COLUMNS_COUNT*defaultCellSize + 200, GameConfig.ROWS_COUNT*defaultCellSize + 120);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,7 +73,6 @@ public class MainScreenViewLogic extends JFrame {
         JButton button = new JButton("");
         button.setVisible(true);
         button.setFont(new Font("Tahoma", Font.PLAIN, defaultCellSize/2));
-        button.setForeground(DEFAULT_COLOR);
         button.setBounds(10 + (distanceBetweenButtons + defaultCellSize) * row, 10 + (distanceBetweenButtons + defaultCellSize) * column, defaultCellSize, defaultCellSize);
         button.setName(row + "_" + column);
         button.setFocusable(false);
@@ -84,14 +81,18 @@ public class MainScreenViewLogic extends JFrame {
         return button;
     }
 
-    public void reSetField() {
+    public void reset() {
         for (JButton button : fieldButtons.values()) {
-            button.setForeground(DEFAULT_COLOR);
             button.setText("");
         }
     }
 
-    public void updateField(){
+    public void updateField(HashMap<String, Cell> map){
 
+        for (Cell cell : map.values()) {
+            JButton button = fieldButtons.get(cell.name);
+            button.setText(cell.text);
+            button.setForeground(cell.color);
+        }
     }
 }
