@@ -73,6 +73,10 @@ public class MainFieldManager extends EventDispatcherExt {
 
     public void reset() {
 
-
+        for (Cell cell : fieldMap.values()) {
+            cell.text = PlaceHolders.EMPTY;
+            cell.color = Color.BLACK;
+        }
+        onFieldUpdated();
     }
 }

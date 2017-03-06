@@ -30,6 +30,8 @@ public class MainScreenManager implements ActionListener, EventListenerEx {
             button.addActionListener(this);
         }
 
+        view.restart.addActionListener(this);
+
         field.addListener(Events.FIELD_UPDATED, this);
 
     }

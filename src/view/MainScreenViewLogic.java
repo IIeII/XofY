@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class MainScreenViewLogic extends JFrame {
 
-    private JButton restart;
+    public JButton restart;
 
     private int defaultCellSize = 80;
     private int distanceBetweenButtons = 2;

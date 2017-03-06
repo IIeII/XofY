@@ -61,26 +61,42 @@ public class CombinationAnalyzer {
         int iconInRow = 1;
         for (Cell cell : cells.values()) {
             // up + none / down + none
-            if (((iconInRow + counterInDirection(UP,NONE, cell, cells) + counterInDirection(DOWN,NONE, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)){
+            if (((iconInRow + counterRowInDirection(UP,NONE, cell, cells) + counterRowInDirection(DOWN,NONE, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)){
+
                 return true;
             }
             // left + none / right + none
-            if (((iconInRow + counterInDirection(LEFT,NONE, cell, cells) + counterInDirection(RIGHT,NONE, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+            if (((iconInRow + counterRowInDirection(LEFT,NONE, cell, cells) + counterRowInDirection(RIGHT,NONE, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
                 return true;
             }
             // right + down / left + up
-            if (((iconInRow + counterInDirection(RIGHT,DOWN, cell, cells) + counterInDirection(LEFT,UP, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+            if (((iconInRow + counterRowInDirection(RIGHT,DOWN, cell, cells) + counterRowInDirection(LEFT,UP, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
                 return true;
             }
             // right + up / left + down
-            if (((iconInRow + counterInDirection(RIGHT,UP, cell, cells) + counterInDirection(LEFT,DOWN, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+            if (((iconInRow + counterRowInDirection(RIGHT,UP, cell, cells) + counterRowInDirection(LEFT,DOWN, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
                 return true;
             }
         }
         return false;
     }
 
-    private int counterInDirection (String dir1, String dir2, Cell cell, HashMap<String, Cell> cells){
+    private int counterRowInDirection(String dir1, String dir2, Cell cell, HashMap<String, Cell> cells){
+
+        int counter = 0;
+        Point cellPoint = getCellPoint(cell.name);
+
+        Point nextPoint = getNextInDirection(cellPoint,dir1, dir2);
+
+        while (cells.containsKey(nextPoint.y + "_" + nextPoint.y)){
+            nextPoint = getNextInDirection(cellPoint,dir1, dir2);
+            counter += 1;
+        }
+
+        return counter;
+    }
+
+    private int counterInDirection(String dir1, String dir2, Cell cell, HashMap<String, Cell> cells){
 
         int counter = 0;
         Point cellPoint = getCellPoint(cell.name);
@@ -135,7 +151,6 @@ public class CombinationAnalyzer {
     public void makeComputerMove(HashMap<String, Cell> fieldMap) {
         //analyzePossibleLoseCombination();
         //analyzePossibleWinCombination();
-        rand.nextInt(emptyCells.size());
 
         Object[] values = emptyCells.values().toArray();
         CellExt randomValue = (CellExt)values[rand.nextInt(values.length)];
