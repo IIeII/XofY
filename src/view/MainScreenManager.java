@@ -1,6 +1,5 @@
 package view;
 
-import logic.CombinationAnalyzer;
 import logic.Events;
 import logic.MainFieldManager;
 import logic.vo.Cell;
@@ -41,11 +40,13 @@ public class MainScreenManager implements ActionListener, EventListenerEx {
         JButton button = (JButton)evt.getSource();
         switch (button.getText()){
             case "RESTART":
+                System.out.println("Button " + button.getName() + " is pressed");
                 view.reset();
                 field.reset();
                 break;
             default: {
-                if (isActionAllowed())
+                System.out.println("Button " + button.getName() + " is pressed");
+                if (field.isMoveAllowed(button.getName()))
                 {
                     field.actionPerformed(button.getName());
                 }
@@ -62,9 +63,5 @@ public class MainScreenManager implements ActionListener, EventListenerEx {
                 view.updateField((HashMap<String, Cell>)evt.getData());
                 break;
         }
-    }
-
-    public boolean isActionAllowed() {
-        return true;
     }
 }

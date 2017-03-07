@@ -22,6 +22,7 @@ public class CombinationAnalyzer {
     private HashMap<String, Cell> computerCells;
     private HashMap<String, CellExt> emptyCells;
 
+    private HashMap<String, Cell> lastCells;
 
     public CombinationAnalyzer() {
 
@@ -35,6 +36,8 @@ public class CombinationAnalyzer {
         playersCells = new HashMap<>();
         computerCells = new HashMap<>();
         emptyCells = new HashMap<>();
+
+        lastCells = new HashMap<>();
 
         for (Cell cell : map.values()) {
 
@@ -61,24 +64,42 @@ public class CombinationAnalyzer {
         int iconInRow = 1;
         for (Cell cell : cells.values()) {
             // up + none / down + none
+            lastCells.clear();
+            lastCells.put(cell.name, cell);
             if (((iconInRow + counterRowInDirection(UP,NONE, cell, cells) + counterRowInDirection(DOWN,NONE, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)){
-
+                highlightLastCells();
                 return true;
             }
             // left + none / right + none
-            if (((iconInRow + counterRowInDirection(LEFT,NONE, cell, cells) + counterRowInDirection(RIGHT,NONE, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+            lastCells.clear();
+            lastCells.put(cell.name, cell);
+            if (((iconInRow + counterRowInDirection(NONE, LEFT, cell, cells) + counterRowInDirection(NONE, RIGHT, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+                highlightLastCells();
                 return true;
             }
             // right + down / left + up
-            if (((iconInRow + counterRowInDirection(RIGHT,DOWN, cell, cells) + counterRowInDirection(LEFT,UP, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+            lastCells.clear();
+            lastCells.put(cell.name, cell);
+            if (((iconInRow + counterRowInDirection(DOWN, RIGHT, cell, cells) + counterRowInDirection(UP, LEFT, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+                highlightLastCells();
                 return true;
             }
             // right + up / left + down
-            if (((iconInRow + counterRowInDirection(RIGHT,UP, cell, cells) + counterRowInDirection(LEFT,DOWN, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+            lastCells.clear();
+            lastCells.put(cell.name, cell);
+            if (((iconInRow + counterRowInDirection(UP, RIGHT, cell, cells) + counterRowInDirection(DOWN, LEFT, cell, cells)) >= GameConfig.MIN_IN_ROW_FOR_WIN)) {
+                highlightLastCells();
                 return true;
             }
         }
         return false;
+    }
+
+    private void highlightLastCells() {
+
+        for (Cell cell : lastCells.values()) {
+            cell.color = Color.RED;
+        }
     }
 
     private int counterRowInDirection(String dir1, String dir2, Cell cell, HashMap<String, Cell> cells){
@@ -88,13 +109,16 @@ public class CombinationAnalyzer {
 
         Point nextPoint = getNextInDirection(cellPoint,dir1, dir2);
 
-        while (cells.containsKey(nextPoint.y + "_" + nextPoint.y)){
-            nextPoint = getNextInDirection(cellPoint,dir1, dir2);
+        while (cells.containsKey(nextPoint.x + "_" + nextPoint.y)){
+            lastCells.put(nextPoint.x + "_" + nextPoint.y, cells.get(nextPoint.x + "_" + nextPoint.y));
+            nextPoint = getNextInDirection(nextPoint,dir1, dir2);
             counter += 1;
         }
 
         return counter;
     }
+
+
 
     private int counterInDirection(String dir1, String dir2, Cell cell, HashMap<String, Cell> cells){
 
@@ -134,8 +158,8 @@ public class CombinationAnalyzer {
 
     private Point getCellPoint(String coord) {
 
-        int row = coord.charAt(0);
-        int column = coord.charAt(2);
+        int row = Character.getNumericValue(coord.charAt(0));
+        int column = Character.getNumericValue(coord.charAt(2));
 
         return new Point(row, column);
     }

@@ -60,8 +60,9 @@ public class MainScreenViewLogic extends JFrame {
 
     private void initField() {
 
-        for (int row = 0; row < GameConfig.COLUMNS_COUNT; row++){
-            for (int column = 0; column < GameConfig.ROWS_COUNT; column++) {
+        for (int row = 0; row < GameConfig.ROWS_COUNT; row++){
+            for (int column = 0; column < GameConfig.COLUMNS_COUNT; column++) {
+
                 fieldButtons.put(row + "_" + column, initButton(row, column));
             }
         }
@@ -73,7 +74,7 @@ public class MainScreenViewLogic extends JFrame {
         JButton button = new JButton("");
         button.setVisible(true);
         button.setFont(new Font("Tahoma", Font.PLAIN, defaultCellSize/2));
-        button.setBounds(10 + (distanceBetweenButtons + defaultCellSize) * row, 10 + (distanceBetweenButtons + defaultCellSize) * column, defaultCellSize, defaultCellSize);
+        button.setBounds(10 + (distanceBetweenButtons + defaultCellSize) * column, 10 + (distanceBetweenButtons + defaultCellSize) * row, defaultCellSize, defaultCellSize);
         button.setName(row + "_" + column);
         button.setFocusable(false);
         getContentPane().add(button);

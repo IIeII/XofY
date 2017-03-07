@@ -13,6 +13,7 @@ public class MainFieldManager extends EventDispatcherExt {
 
     private CombinationAnalyzer analyzer;
     private HashMap<String, Cell> fieldMap = new HashMap<>();
+    private Boolean isGameActive = false;
 
 
     public MainFieldManager() {
@@ -20,12 +21,13 @@ public class MainFieldManager extends EventDispatcherExt {
         analyzer = new CombinationAnalyzer();
 
         createField();
+        isGameActive = true;
     }
 
     private void createField() {
 
-        for (int row = 0; row < GameConfig.COLUMNS_COUNT; row++){
-            for (int column = 0; column < GameConfig.ROWS_COUNT; column++) {
+        for (int row = 0; row < GameConfig.ROWS_COUNT; row++){
+            for (int column = 0; column < GameConfig.COLUMNS_COUNT; column++) {
                 fieldMap.put(row + "_" + column, createCell(row, column));
             }
         }
@@ -52,10 +54,12 @@ public class MainFieldManager extends EventDispatcherExt {
 
 
         if (analyzer.hasWinningCombination(fieldMap)){
-            //highlight winning
-//            dispatchEvent(new EventTrans(Events.));
+            isGameActive = false;
         } else {
             analyzer.makeComputerMove(fieldMap);
+            if (analyzer.hasWinningCombination(fieldMap)) {
+                isGameActive = false;
+            }
         }
 
         onFieldUpdated();
@@ -77,6 +81,12 @@ public class MainFieldManager extends EventDispatcherExt {
             cell.text = PlaceHolders.EMPTY;
             cell.color = Color.BLACK;
         }
+        isGameActive = true;
         onFieldUpdated();
+    }
+
+    public boolean isMoveAllowed(String name) {
+
+        return fieldMap.get(name).text.equals(PlaceHolders.EMPTY) && isGameActive;
     }
 }
