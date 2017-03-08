@@ -60,6 +60,7 @@ public class MainScreenViewLogic extends JFrame {
 
     private void initField() {
 
+
         for (int row = 0; row < GameConfig.ROWS_COUNT; row++){
             for (int column = 0; column < GameConfig.COLUMNS_COUNT; column++) {
 

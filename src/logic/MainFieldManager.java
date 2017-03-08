@@ -51,9 +51,7 @@ public class MainFieldManager extends EventDispatcherExt {
         cell.text = PlaceHolders.PLAYER;
         cell.color = Color.BLACK;
 
-
-
-        if (analyzer.hasWinningCombination(fieldMap)){
+        if (analyzer.hasWinningCombination(fieldMap) || !analyzer.hasEmptyCells()){
             isGameActive = false;
         } else {
             analyzer.makeComputerMove(fieldMap);

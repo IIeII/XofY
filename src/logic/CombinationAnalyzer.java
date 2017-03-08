@@ -20,7 +20,7 @@ public class CombinationAnalyzer {
 
     private HashMap<String, Cell> playersCells;
     private HashMap<String, Cell> computerCells;
-    private HashMap<String, CellExt> emptyCells;
+    private HashMap<String, Cell> emptyCells;
 
     private HashMap<String, Cell> lastCells;
 
@@ -49,7 +49,7 @@ public class CombinationAnalyzer {
                     playersCells.put(cell.name, cell);
                     break;
                 default:
-                    emptyCells.put(cell.name, new CellExt(cell.copy()));
+                    emptyCells.put(cell.name, cell);
             }
         }
 
@@ -118,23 +118,6 @@ public class CombinationAnalyzer {
         return counter;
     }
 
-
-
-    private int counterInDirection(String dir1, String dir2, Cell cell, HashMap<String, Cell> cells){
-
-        int counter = 0;
-        Point cellPoint = getCellPoint(cell.name);
-
-        Point nextPoint = getNextInDirection(cellPoint,dir1, dir2);
-
-        while (cells.containsKey(nextPoint.y + "_" + nextPoint.y)){
-            nextPoint = getNextInDirection(cellPoint,dir1, dir2);
-            counter += 1;
-        }
-
-        return counter;
-    }
-
     private Point getNextInDirection(Point point, String dir1, String dir2){
 
         int row = point.x;
@@ -164,30 +147,14 @@ public class CombinationAnalyzer {
         return new Point(row, column);
     }
 
-    private void analyzePossibleLoseCombination(){
-
-    }
-
-    private void analyzePossibleWinCombination(){
-
-    }
-
     public void makeComputerMove(HashMap<String, Cell> fieldMap) {
-        //analyzePossibleLoseCombination();
-        //analyzePossibleWinCombination();
-
         Object[] values = emptyCells.values().toArray();
-        CellExt randomValue = (CellExt)values[rand.nextInt(values.length)];
+        Cell randomValue = (Cell)values[rand.nextInt(values.length)];
         fieldMap.get(randomValue.name).text = PlaceHolders.COMPUTER;
     }
 
-    private class CellExt extends Cell {
-        public int cost = 1;
-        public CellExt(Cell cell) {
-            super();
-            text = cell.text;
-            name = cell.name;
-            color = cell.color;
-        }
+    public boolean hasEmptyCells() {
+
+        return !emptyCells.isEmpty();
     }
 }

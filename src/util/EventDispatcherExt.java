@@ -13,10 +13,6 @@ public class EventDispatcherExt {
         listeners.add(new EventVO(eventName, listener));
     }
 
-    public void removeListener(String eventName, EventListenerEx listener){
-        //implement me
-    }
-
     protected void dispatchEvent(EventTrans event) throws Throwable {
         for(EventVO eventVO : listeners){
             if (eventVO.eventName.equals(event.getEventName())){
